@@ -1,7 +1,5 @@
 package com.example.teamcity.api;
 
-import com.example.teamcity.api.enums.Role;
-import com.example.teamcity.api.generators.TestDataGenerator;
 import com.example.teamcity.api.requests.UncheckedRequests;
 import com.example.teamcity.api.requests.checked.CheckedProject;
 import com.example.teamcity.api.spec.Specifications;
@@ -14,8 +12,6 @@ public class CreateProjectTest extends BaseApiTest {
     public void createProjectTest() {
         var testData = testDataStorage.addTestData();
 
-        testData.getUser().setRoles(TestDataGenerator.generateRoles(Role.SYSTEM_ADMIN, "g"));
-
         checkedWithSuperUser.getUserRequest().create(testData.getUser());
 
         var project = new CheckedProject(Specifications.getSpec()
@@ -26,21 +22,19 @@ public class CreateProjectTest extends BaseApiTest {
     }
 
     @Test
-    public void projectIsNotCreatedForNotSystemAdminRole() {
+    public void unauthorizedUserShouldNotCreateProject() {
         var testData = testDataStorage.addTestData();
 
-        testData.getUser().setRoles(TestDataGenerator.generateRoles(Role.PROJECT_DEVELOPER, "g"));
-
-        new UncheckedRequests(Specifications.getSpec().authSpec(testData.getUser())).getProjectRequest()
+        new UncheckedRequests(Specifications.getSpec().unauthSpec()).getProjectRequest()
                 .create(testData.getProject())
                 .then().assertThat().statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .body(Matchers.containsString("Incorrect username or password"));
+                .body(Matchers.containsString("Authentication required"));
 
         uncheckedWithSuperUser.getProjectRequest()
                 .get(testData.getProject().getId())
                 .then().assertThat().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("No project found by locator" +
                         " 'count:1,id:" + testData.getProject().getId() + "'"));
-    }
+  }
 
 }

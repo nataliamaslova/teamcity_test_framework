@@ -6,14 +6,14 @@ Accept: application/json
 POST http://192.168.0.165:8111/app/rest/projects
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: e1edabe0-629b-4a99-a596-3080e99558eb
+X-TC-CSRF-Token: 067fbd8e-2f5d-4c6c-a908-653aa2569e08
 
 {
   "parentProject": {
     "locator": "_Root"
   },
-  "name": "name2",
-  "id": "id2",
+  "name": "name3",
+  "id": "id3",
   "copyAllAssociatedSettings": true
 }
 
@@ -59,7 +59,7 @@ X-TC-CSRF-Token: 8e5d8d7d-534f-4bc6-853a-3f8d7bc56b31
 POST http://192.168.0.165:8111/app/rest/buildQueue
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 83357dae-f7c8-4c00-9b94-747f219a93de
+X-TC-CSRF-Token: b9b860fc-686f-43d6-aa4a-702a5e5b9ac6
 
 {
   "buildType": {
@@ -68,7 +68,66 @@ X-TC-CSRF-Token: 83357dae-f7c8-4c00-9b94-747f219a93de
 }
 
 ### 4. Check build status
-GET http://192.168.0.165:8111/app/rest/builds/id:102
+GET http://192.168.0.165:8111/app/rest/builds/id:103
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: a9cb3cc4-c4fd-4a8e-a0b9-5c33cafbf07a
+X-TC-CSRF-Token: 3cee320b-9042-4062-ac6a-e742ba312c8a
+
+
+### 5. Turn on permissions
+PUT http://192.168.0.165:8111/app/rest/server/authSettings
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: dc786017-3952-4ac1-8942-c31e4c6e66f5
+
+{
+  "allowGuest": false,
+  "guestUsername": "guest",
+  "collapseLoginForm": false,
+  "perProjectPermissions": true,
+  "emailVerification": false,
+  "modules": {
+    "module": [
+      {
+        "name": "Default",
+        "properties": {
+          "property": [
+            {
+              "name": "usersCanResetOwnPasswords",
+              "value": "true"
+            },
+            {
+              "name": "usersCanChangeOwnPasswords",
+              "value": "true"
+            },
+            {
+              "name": "freeRegistrationAllowed",
+              "value": "false"
+            }
+          ],
+          "count": 3
+        }
+      },
+      {
+        "name": "Token-Auth",
+        "properties": {
+          "property": [],
+          "count": 0
+        }
+      },
+      {
+        "name": "HTTP-Basic",
+        "properties": {
+          "property": [],
+          "count": 0
+        }
+      }
+    ]
+  }
+}
+
+### 6. Verify permissions
+GET http://192.168.0.165:8111/app/rest/server/authSettings
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 74a7cb06-c2b1-4bab-8582-34a95dd52ab0
