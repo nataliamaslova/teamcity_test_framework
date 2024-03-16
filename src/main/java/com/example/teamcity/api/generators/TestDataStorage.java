@@ -30,6 +30,6 @@ public class TestDataStorage {
     }
 
     public void delete() {
-        testDataList.forEach(testData -> testData.delete());
+        testDataList.forEach(testData -> testData.deleteInUi());
     }
 }
