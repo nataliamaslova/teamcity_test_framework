@@ -23,4 +23,23 @@ public class CreateNewProjectTest extends BaseUiTest {
                 .stream().reduce((first, second) -> second).get()
                 .getHeader().shouldHave(Condition.text(testData.getProject().getName()));
     }
+
+    @Test
+    public void projectIsNotCreatedForInvalidUrl() {
+        var testData = testDataStorage.addTestData();
+        var url = "abc";
+
+        loginAsUser(testData.getUser());
+
+        new CreateNewProject()
+                .open(testData.getProject().getParentProject().getLocator())
+                .createProjectByUrl(url)
+                .waitUntilMessageErrorUrlIsLoaded();
+
+        new ProjectsPage().open()
+                .getSubprojects()
+                .stream().reduce((first, second) -> second).get()
+                .getHeader().shouldNotHave(Condition.text(testData.getProject().getName()));
+     }
+
 }

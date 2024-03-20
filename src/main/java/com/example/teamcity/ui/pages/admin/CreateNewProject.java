@@ -16,18 +16,23 @@ public class CreateNewProject extends Page {
     private SelenideElement headerCreateProject = element(byText("Create Project"));
     private SelenideElement headerCreateProjectFromUrl = element(byText("Create Project From URL"));
     private SelenideElement urlInput = element(Selectors.byId("url"));
-    private SelenideElement projectNameInput = element((Selectors.byId("projectName")));
-    private SelenideElement buildTypeNameInput = element((Selectors.byId("buildTypeName")));
+    private SelenideElement projectNameInput = element(Selectors.byId("projectName"));
+    private SelenideElement buildTypeNameInput = element(Selectors.byId("buildTypeName"));
+    private SelenideElement messageErrorUrl = element(byText("Cannot create a project using the specified URL. The URL is not recognized."));
 
     public void waitUntilCreateNewProjectPageIsLoaded() {
         waitUntilPageIsLoaded();
         headerCreateProject.shouldBe(Condition.visible, Duration.ofSeconds(30));
-        }
+    }
+
     public void waitUntilCreateProjectFromUrlPageIsLoaded() {
         waitUntilPageIsLoaded();
         headerCreateProjectFromUrl.shouldBe(Condition.visible, Duration.ofSeconds(30));
     }
-
+    public void waitUntilMessageErrorUrlIsLoaded() {
+        waitUntilPageIsLoaded();
+        messageErrorUrl.shouldBe(Condition.visible, Duration.ofSeconds(30));
+    }
 
     public CreateNewProject open(String parentProjectId) {
         Selenide.open("/admin/createObjectMenu.html?projectId=" + parentProjectId + "&showMode=createProjectMenu");
