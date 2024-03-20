@@ -1,5 +1,7 @@
 package com.example.teamcity.api.generators;
 
+import com.codeborne.selenide.Configuration;
+import com.example.teamcity.api.config.Config;
 import com.example.teamcity.api.models.BuildType;
 import com.example.teamcity.api.models.NewProjectDescription;
 import com.example.teamcity.api.models.User;
@@ -17,9 +19,24 @@ public class TestData {
     private BuildType buildType;
 
     public void delete() {
-        var spec = Specifications.getSpec().authSpec(user);
+        var spec = Specifications.getSpec().superUserSpec();
 
-        new UncheckedProject(spec).delete(project.getId());
+        if (Configuration.baseUrl.contains(Config.getProperty("host"))) {
+            // delete project in UI tests: id created by Teamcity
+            new UncheckedProject(spec).delete(transformNameToId(project.getName()));
+
+        } else {
+            //  delete project in API tests
+            new UncheckedProject(spec).delete(project.getId());
+        }
+
         new UncheckedUser(spec).delete(user.getUsername());
+    }
+
+    private String transformNameToId(String name) {
+        String id = name;
+        id = id.replace("_", "");
+        id = Character.toUpperCase(id.charAt(0)) + id.substring(1);
+        return id;
     }
 }
