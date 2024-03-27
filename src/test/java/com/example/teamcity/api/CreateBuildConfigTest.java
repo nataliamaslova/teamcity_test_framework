@@ -7,6 +7,7 @@ import com.example.teamcity.api.requests.checked.CheckedProject;
 import com.example.teamcity.api.requests.checked.CheckedUser;
 import com.example.teamcity.api.requests.unchecked.UncheckedBuildConfig;
 import com.example.teamcity.api.spec.Specifications;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
@@ -62,7 +63,8 @@ public class CreateBuildConfigTest extends BaseApiTest {
 
         new UncheckedBuildConfig(Specifications.getSpec().authSpec(testData.getUser()))
                 .create(testData.getBuildType()).then().statusCode(HttpStatus.SC_FORBIDDEN)
-                .body(Matchers.containsString("Access denied. Check the user has enough permissions to perform the operation"));
+                .body(Matchers.containsString("Access denied. " +
+                        "Check the user has enough permissions to perform the operation"));
     }
 
     @Test
@@ -82,7 +84,8 @@ public class CreateBuildConfigTest extends BaseApiTest {
                 .authSpec(testData.getUser()))
                 .create(testData.getBuildType())
                 .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("When creating a build type, non empty name should be provided"));
+                .body(Matchers.containsString("When creating a build type, " +
+                        "non empty name should be provided"));
     }
 
     @Test
@@ -150,7 +153,7 @@ public class CreateBuildConfigTest extends BaseApiTest {
     @Test
     public void buildConfigurationCreatedFor4000SymbolsInNameTest() {
         var testData = testDataStorage.addTestData();
-        var expectedProjectName = "1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol";
+        var expectedProjectName = RandomStringUtils.randomAlphabetic(4000);
 
         testData.getBuildType().setName(expectedProjectName);
 

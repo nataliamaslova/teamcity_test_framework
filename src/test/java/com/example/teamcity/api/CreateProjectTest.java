@@ -6,6 +6,7 @@ import com.example.teamcity.api.requests.checked.CheckedProject;
 import com.example.teamcity.api.requests.checked.CheckedUser;
 import com.example.teamcity.api.requests.unchecked.UncheckedProject;
 import com.example.teamcity.api.spec.Specifications;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
@@ -36,14 +37,16 @@ public class CreateProjectTest extends BaseApiTest {
         uncheckedWithSuperUser.getProjectRequest()
                 .get(testData.getProject().getId())
                 .then().assertThat().statusCode(HttpStatus.SC_NOT_FOUND)
-                .body(Matchers.containsString("No project found by locator" +
-                        " 'count:1,id:" + testData.getProject().getId() + "'"));
+                .body(Matchers.containsString(String.format("No project found by locator 'count:1,id:%s'",
+                        testData.getProject().getId())));
   }
 
     @Test
     public void projectIsNotCreatedForInvalidParentIdTest() {
         var testData = testDataStorage.addTestData();
-        var invalidParentId = "abc";
+
+        // valid parentId equals "_Root"
+        var invalidParentId = RandomStringUtils.randomAlphabetic(5);
 
         testData.getProject().setParentProject(Project.builder()
                 .locator(invalidParentId)
@@ -58,8 +61,8 @@ public class CreateProjectTest extends BaseApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body(Matchers.containsString("No project found by name or internal/external id '"
-                        + invalidParentId + "'."));
+                .body(Matchers.containsString(String.format("No project found by name or internal/external id '%s'.",
+                        invalidParentId)));
     }
     @Test
     public void projectIsNotCreatedForTheSameIdTest() {
@@ -78,8 +81,9 @@ public class CreateProjectTest extends BaseApiTest {
                 .create(testData.getProject())
                 .then().assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("DuplicateProjectNameException: Project with this name already exists: "
-                                + testData.getProject().getName()));
+                .body(Matchers.containsString(String.format("DuplicateProjectNameException: " +
+                                "Project with this name already exists: %s",
+                                testData.getProject().getName())));
     }
 
     @Test
@@ -117,7 +121,7 @@ public class CreateProjectTest extends BaseApiTest {
     @Test
     public void projectCreatedFor4000SymbolsInNameTest() {
         var testData = testDataStorage.addTestData();
-        var expectedProjectName = "1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol1000Symbol";
+        var expectedProjectName = RandomStringUtils.randomAlphabetic(4000);
 
         checkedWithSuperUser.getUserRequest().create(testData.getUser());
 
@@ -161,4 +165,5 @@ public class CreateProjectTest extends BaseApiTest {
 
         softy.assertThat(project.getName()).isEqualTo(expectedProjectName);
     }
+
 }
