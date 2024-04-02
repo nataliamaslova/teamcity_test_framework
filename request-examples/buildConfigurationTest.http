@@ -132,27 +132,25 @@ X-TC-CSRF-Token: dc786017-3952-4ac1-8942-c31e4c6e66f5
 }
 
 ### 6. Verify permissions
+#X-TC-CSRF-Token: 74a7cb06-c2b1-4bab-8582-34a95dd52ab0
 GET http://192.168.0.165:8111/app/rest/server/authSettings
 Content-Type: application/json
-Accept: application/json
-X-TC-CSRF-Token: 7c2b683d-3224-4b58-88fe-43d3f85f74a0
+Accept: application/js
 
 ### 7. Find projects
 GET http://192.168.0.165:8111/app/rest/projects
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: f7f2def9-77d1-4534-93dd-6d8fe0221fef
+X-TC-CSRF-Token: 615f3742-0394-4a90-aa57-47dd340c4a24
 
 ### 8. Find project
 GET http://192.168.0.165:8111/app/rest/projects/id%3Atest_nxyRnAuWmp
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 34a0f609-ca88-4c12-b962-45237f60fd72
+X-TC-CSRF-Token: 7c2b683d-3224-4b58-88fe-43d3f85f74a0
 
 ### 9. Delete project
-DELETE  http://192.168.0.165:8111/app/rest/projects/id%3ATestTRLgeESDhq
+DELETE  http://192.168.0.165:8111/app/rest/projects/id%3ATestJApUNYeQxh
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: f7f2def9-77d1-4534-93dd-6d8fe0221fef
-
-
+X-TC-CSRF-Token: bb40ae60-c961-4ce8-bec0-4a12b3acb06d

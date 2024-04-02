@@ -24,4 +24,18 @@ public class TestData {
         new UncheckedProject(spec).delete(project.getId());
         new UncheckedUser(spec).delete(user.getUsername());
     }
+
+    public void deleteInUi() {
+        var spec = Specifications.getSpec().superUserSpec();
+
+        new UncheckedProject(spec).delete(transformNameToId(project.getName()));
+        new UncheckedUser(spec).delete(user.getUsername());
+    }
+
+    private String transformNameToId(String name) {
+        String id = name;
+        id = id.replace("_", "");
+        id = Character.toUpperCase(id.charAt(0)) + id.substring(1);
+        return id;
+    }
 }
