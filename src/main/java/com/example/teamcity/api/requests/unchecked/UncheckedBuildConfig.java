@@ -33,6 +33,6 @@ public class UncheckedBuildConfig extends Request implements CrudInterface {
     @Override
     public Response delete(String id) {
         return given().spec(spec)
-                .post(BUILD_CONFIG_ENDPOINT + "/id:" + id);
+                .delete(BUILD_CONFIG_ENDPOINT + "/id:" + id);
     }
 }

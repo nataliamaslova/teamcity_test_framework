@@ -1,33 +1,36 @@
 ### 0. Generate auth token
+### Запрос на получение токена CSRF для аутентификации
 GET http://admin:admin@192.168.0.165:8111/authenticationTest.html?csrf
 Accept: application/json
 
 ### 1. Create project
+### Запрос на создание проекта
 POST http://192.168.0.165:8111/app/rest/projects
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 067fbd8e-2f5d-4c6c-a908-653aa2569e08
+X-TC-CSRF-Token: cebd880a-3ec4-463f-80ca-4904040da680
 
 {
   "parentProject": {
     "locator": "_Root"
   },
-  "name": "name3",
-  "id": "id3",
+  "name": "name33",
+  "id": "id33",
   "copyAllAssociatedSettings": true
 }
 
 ### 2. Create build configuration
+### Запрос на создание конфигурации сборки
 POST http://192.168.0.165:8111/app/rest/buildTypes
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 8e5d8d7d-534f-4bc6-853a-3f8d7bc56b31
+X-TC-CSRF-Token: 2033a61c-ae3f-4fce-b094-5afecd5c8c85
 
 {
-  "id": "id",
+  "id": "id_build33",
   "name": "Print hello world",
   "project": {
-    "id": "id"
+    "id": "id33"
   },
   "steps": {
     "step": [
@@ -56,22 +59,24 @@ X-TC-CSRF-Token: 8e5d8d7d-534f-4bc6-853a-3f8d7bc56b31
 }
 
 ### 3. Run build
+### Запрос на запуск сборки
 POST http://192.168.0.165:8111/app/rest/buildQueue
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: b9b860fc-686f-43d6-aa4a-702a5e5b9ac6
+X-TC-CSRF-Token: 5d068440-124f-4756-8b55-9d41c786aed9
 
 {
   "buildType": {
-    "id": "id"
+    "id": "id_build33"
   }
 }
 
 ### 4. Check build status
-GET http://192.168.0.165:8111/app/rest/builds/id:103
+### Запрос на получение статуса сборки
+GET http://192.168.0.165:8111/app/rest/builds/id:202
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 3cee320b-9042-4062-ac6a-e742ba312c8a
+X-TC-CSRF-Token: 88984ffc-679f-4ac3-baf7-341cd0b4c200
 
 
 ### 5. Turn on permissions
@@ -142,12 +147,10 @@ X-TC-CSRF-Token: 615f3742-0394-4a90-aa57-47dd340c4a24
 GET http://192.168.0.165:8111/app/rest/projects/id%3Atest_nxyRnAuWmp
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 34a0f609-ca88-4c12-b962-45237f60fd72
+X-TC-CSRF-Token: 7c2b683d-3224-4b58-88fe-43d3f85f74a0
 
 ### 9. Delete project
 DELETE  http://192.168.0.165:8111/app/rest/projects/id%3ATestJApUNYeQxh
 Content-Type: application/json
 Accept: application/json
 X-TC-CSRF-Token: bb40ae60-c961-4ce8-bec0-4a12b3acb06d
-
-
