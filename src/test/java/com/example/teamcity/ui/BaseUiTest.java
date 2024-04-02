@@ -13,6 +13,7 @@ public class BaseUiTest extends BaseTest {
     @BeforeSuite
     public void setupUiTests() {
         Configuration.baseUrl = "http://" + Config.getProperty("host");
+        // comment if you need to start browser locally
 //        Configuration.remote = Config.getProperty("remote");
         Configuration.reportsFolder = "target/surefire-reports";
         Configuration.downloadsFolder ="target/downloads";
