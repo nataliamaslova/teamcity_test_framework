@@ -3,6 +3,7 @@ package com.example.teamcity.ui;
 import com.codeborne.selenide.Selenide;
 import com.example.teamcity.ui.pages.admin.BuildSteps;
 import com.example.teamcity.ui.pages.admin.CreateNewProject;
+import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
 public class CreateBuildConfigTest extends BaseUiTest {
@@ -22,13 +23,16 @@ public class CreateBuildConfigTest extends BaseUiTest {
                 .open()
                 .createBuildSteps();
 
-        String pageTitle = Selenide.title();
+        uncheckedWithSuperUser.getBuildConfigRequest()
+                .get(testData.getBuildType().getTeamCityBuildId())
+                .then().assertThat().statusCode(HttpStatus.SC_OK);
 
+        String pageTitle = Selenide.title();
         softy.assertThat(pageTitle.contains(testData.getBuildType().getName()));
     }
 
     @Test
-    public void buildConfigurationIsNotCreatedForInvalidCustomScript() {
+    public void buildConfigurationIsNotCreatedForInvalidBuildTypeName() {
         var testData = testDataStorage.addTestData();
         var url = "https://github.com/AlexPshe/spring-core-for-qa";
 
@@ -37,15 +41,11 @@ public class CreateBuildConfigTest extends BaseUiTest {
         new CreateNewProject()
                 .open(testData.getProject().getParentProject().getLocator())
                 .createProjectByUrl(url)
-                .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
+                .setupProject(testData.getProject().getName(), "")
+                .waitUntilMessageErrorBuildConfigurationIsLoaded();
 
-        new BuildSteps()
-                .open()
-                .createCommandLineBuildSteps()
-                .waitUntilMessageErrorCustomScriptIsLoaded();
-
-        String pageTitle = Selenide.title();
-
-        softy.assertThat(pageTitle.contains(testData.getBuildType().getName()));
+        uncheckedWithSuperUser.getBuildConfigRequest()
+                .get(testData.getBuildType().getTeamCityBuildId())
+                .then().assertThat().statusCode(HttpStatus.SC_NOT_FOUND);
     }
 }

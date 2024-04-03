@@ -21,13 +21,18 @@ public class UncheckedBuildConfig extends Request implements CrudInterface {
     }
 
     @Override
-    public Object get(String id) {
-        return null;
+    public Response get(String id) {
+        return given()
+                .spec(spec)
+                .get(BUILD_CONFIG_ENDPOINT + "/id:" + id);
     }
 
     @Override
-    public Object update(String id, Object obj) {
-        return null;
+    public Response update(String id, Object obj) {
+        return given()
+                .spec(spec)
+                .body(obj)
+                .get(BUILD_CONFIG_ENDPOINT + "/id:" + id);
     }
 
     @Override

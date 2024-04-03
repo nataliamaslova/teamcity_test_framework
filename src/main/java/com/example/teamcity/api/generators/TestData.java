@@ -5,6 +5,7 @@ import com.example.teamcity.api.config.Config;
 import com.example.teamcity.api.models.BuildType;
 import com.example.teamcity.api.models.NewProjectDescription;
 import com.example.teamcity.api.models.User;
+import com.example.teamcity.api.requests.unchecked.UncheckedBuildConfig;
 import com.example.teamcity.api.requests.unchecked.UncheckedProject;
 import com.example.teamcity.api.requests.unchecked.UncheckedUser;
 import com.example.teamcity.api.spec.Specifications;
@@ -22,21 +23,17 @@ public class TestData {
         var spec = Specifications.getSpec().superUserSpec();
 
         if (Configuration.baseUrl.contains(Config.getProperty("host"))) {
-            // delete project in UI tests: id created by Teamcity
-            new UncheckedProject(spec).delete(transformNameToId(project.getName()));
+            // delete build config / project in UI tests: id created by Teamcity
+            new UncheckedBuildConfig(spec).delete(buildType.getTeamCityBuildId());
+            new UncheckedProject(spec).delete(project.getTeamCityProjectId());
 
         } else {
-            //  delete project in API tests
+            // build config / delete project in API tests
+            new UncheckedBuildConfig(spec).delete(buildType.getId());
             new UncheckedProject(spec).delete(project.getId());
         }
 
         new UncheckedUser(spec).delete(user.getUsername());
     }
 
-    private String transformNameToId(String name) {
-        String id = name;
-        id = id.replace("_", "");
-        id = Character.toUpperCase(id.charAt(0)) + id.substring(1);
-        return id;
-    }
 }
