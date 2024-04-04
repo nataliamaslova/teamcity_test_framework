@@ -141,7 +141,7 @@ Accept: application/js
 GET http://192.168.0.165:8111/app/rest/projects
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 615f3742-0394-4a90-aa57-47dd340c4a24
+X-TC-CSRF-Token: d3a78039-4610-4e85-9484-38f0f06c6c42
 
 ### 8. Find project
 GET http://192.168.0.165:8111/app/rest/projects/id%3Atest_nxyRnAuWmp
@@ -154,3 +154,15 @@ DELETE  http://192.168.0.165:8111/app/rest/projects/id%3ATestJApUNYeQxh
 Content-Type: application/json
 Accept: application/json
 X-TC-CSRF-Token: bb40ae60-c961-4ce8-bec0-4a12b3acb06d
+
+### 10. Find builds
+GET http://192.168.0.165:8111/app/rest/buildTypes
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: d7a83cbd-c5cb-43b2-b35b-c4cc31520e57
+
+### 11. Find build TestwhwSXCuaQt_TestWcSSqEfaUj       TestIXBIbUXnsw_TestDXJAJTZYzR
+GET http://192.168.0.165:8111/app/rest/buildTypes/id%3ATestiXBIbUXnsw_TestDXJAJTZYzR
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 48b791b0-71c4-44fb-8b31-2e5b4d685d5b
