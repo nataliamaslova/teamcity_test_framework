@@ -3,13 +3,15 @@ cd ..
 teamcity_tests_directory=$(pwd)
 workdir="teamcity_tests_infrastructure"
 teamcity_server_workdir="teamcity_server"
+teamcity_agent_workdir="teamcity_agent"
 selenoid_workdir="selenoid"
-teamcity_server_container_name="teamcity-server-instance"
+teamcity_server_container_name="teamcity_server_instance"
+teamcity_agent_container_name="teamcity_agent_instance"
 selenoid_container_name="selenoid"
-selenoid_ui_container_name="selenoid-ui"
+selenoid_ui_container_name="selenoid_ui"
 
-workdir_names=($teamcity_server_workdir $selenoid_workdir)
-container_names=($teamcity_server_container_name  $selenoid_container_name $selenoid_ui_container_name)
+workdir_names=($teamcity_server_workdir $teamcity_agent_workdir $selenoid_workdir)
+container_names=($teamcity_server_container_name  $teamcity_agent_container_name $selenoid_container_name $selenoid_ui_container_name)
 
 ################################
 echo "Define IP"
@@ -44,9 +46,21 @@ cd $teamcity_server_workdir
 docker run -d --name $teamcity_server_container_name -u 0  \
     -v /$teamcity_tests_directory/$workdir/$teamcity_server_workdir/logs:/opt/teamcity/logs  \
     -p 8111:8111 \
-    jetbrains/teamcity-server
+    jetbrains/teamcity-server:2023.11.1
 
 echo "Teamcity Server is running..."
+
+################################
+echo "Start Teamcity Agent"
+
+cd ..
+cd $teamcity_agent_workdir
+
+docker run -e SERVER_URL=http://$ip:8111 -u 0 -d --name $teamcity_agent_container_name \
+          -v /$teamcity_tests_directory/$workdir/$teamcity_agent_workdir/conf:/data/teamcity_agent/conf \
+          jetbrains/teamcity-agent:2023.11.1
+
+echo "Teamcity Agent is running..."
 
 ################################
 echo "Start selenoid"
@@ -64,8 +78,8 @@ docker run -d --name $selenoid_container_name \
 echo "Selenoid is running..."
 
 ################################
-#echo "Start firefox browser"
-#docker pull selenoid/vnc:firefox_89.0
+echo "Start firefox browser"
+docker pull selenoid/vnc:firefox_89.0
 
 ################################
 echo "Start selenoid-ui"
@@ -79,7 +93,7 @@ echo "Selenoid-UI is running..."
 echo "Setup teamcity server"
 
 cd .. && cd ..
-mvn clean test -Dtest=SetupFirstStartTest#startUpTest
+mvn clean test -Dtest=SetupFirstStartTest#setupTeamCityServerTest
 
 ################################
 echo "Parse superuser token"
@@ -88,13 +102,18 @@ superuser_token=$(grep -o 'Super user authentication token: [0-9]*' $teamcity_te
 echo "Super user token: $superuser_token"
 
 ################################
-echo "Run system tests with config data"
+echo "Config data"
 
 echo "host=$ip:8111
 superUserToken=$superuser_token
 remote=http://$ip:4444/wd/hub
 browser=firefox" > $teamcity_tests_directory/src/main/resources/config.properties
 cat $teamcity_tests_directory/src/main/resources/config.properties
+
+################################
+echo "Setup teamcity agent"
+
+mvn test -Dtest=AuthorizeAgentTest#authorizeAgent
 
 echo "Run API/UI tests"
 mvn test

@@ -13,7 +13,6 @@ import static com.codeborne.selenide.Selenide.element;
 @Getter
 public class StartUpPage extends Page {
     private static final String STARTUP_PAGE_URL = "/mnt";
-//    private SelenideElement restoreButton = element(Selectors.byId("restoreButton"));
     private SelenideElement header = element(Selectors.byId("header"));
     private SelenideElement proceedButton = element(Selectors.byId("proceedButton"));
     private SelenideElement acceptLicense = element(Selectors.byId("agreementPage"));
@@ -32,8 +31,7 @@ public class StartUpPage extends Page {
         waitUntilPageIsLoaded();
         acceptLicense.shouldBe(Condition.enabled, Duration.ofMinutes(5));
         acceptLicense.scrollTo();
-        acceptLicenseCheck.click(); //
-//        acceptLicense.click(); //
+        acceptLicenseCheck.click();
         submit();
         return this;
     }

@@ -161,8 +161,16 @@ Content-Type: application/json
 Accept: application/json
 X-TC-CSRF-Token: d7a83cbd-c5cb-43b2-b35b-c4cc31520e57
 
-### 11. Find build TestwhwSXCuaQt_TestWcSSqEfaUj       TestIXBIbUXnsw_TestDXJAJTZYzR
+### 11. Find build
 GET http://192.168.0.165:8111/app/rest/buildTypes/id%3ATestiXBIbUXnsw_TestDXJAJTZYzR
 Content-Type: application/json
 Accept: application/json
 X-TC-CSRF-Token: 48b791b0-71c4-44fb-8b31-2e5b4d685d5b
+
+### 12. Put agent
+PUT http://192.168.0.165:8111/app/rest/agents/ip_172.17.0.1-2/authorized
+Content-Type: text/plain
+Accept: text/plain
+X-TC-CSRF-Token: 2307798a-4faa-4fef-a3dc-2162b37d5d13
+
+true

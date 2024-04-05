@@ -68,6 +68,17 @@ jobs:
       - name: Set up superUserToken config property
         run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
 
+      - name: Run TeamCity agent
+        run: |
+          docker run -e SERVER_URL=http://$HOST:8111 -u 0 -d --name teamcity-agent \
+          -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
+          jetbrains/teamcity-agent:2023.11.1
+
+      - name: Set up TeamCity agent
+        # Авторизация агента при первом запуске, реализованная в виде теста
+        # Не указываем clean, чтобы потом в итоговом репорте были и setup тесты
+        run: ./mvnw test -Dtest=AuthorizeAgentTest#authorizeAgent
+
       - name: Run tests
-        # Указываем группу, чтобы еще раз не запустить тесты, которые использовались для сетапа сервера и агента
-        run: ./mvnw test -Dgroups=Regression
+        run: ./mvnw test  # запуск тестов из сьютов, указанных в pom.xml
+#        run: ./mvnw test -Dgroups=Regression # Указываем группу

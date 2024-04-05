@@ -6,11 +6,10 @@ import org.testng.annotations.Test;
 
 public class SetupFirstStartTest extends BaseUiTest {
     @Test
-    public void startUpTest()  {
+    public void setupTeamCityServerTest()  {
         new StartUpPage()
                 .open()
                 .setupTeamCityServer();
- //               .getHeader.shouldHave(Condition.text("Create Administrator Account"));
         softy.assertThat(Selenide.title().contains("Create Administrator Account"));
     }
 }
