@@ -63,6 +63,14 @@ docker run -e SERVER_URL=http://$ip:8111 -u 0 -d --name $teamcity_agent_containe
 echo "Teamcity Agent is running..."
 
 ################################
+echo "Config data"
+
+echo "host=$ip:8111
+remote=http://$ip:4444/wd/hub
+browser=firefox" > $teamcity_tests_directory/src/main/resources/config.properties
+cat $teamcity_tests_directory/src/main/resources/config.properties
+
+################################
 echo "Start selenoid"
 
 cd .. && cd $selenoid_workdir
@@ -71,7 +79,7 @@ cp $teamcity_tests_directory/infra/browsers.json config/
 
 docker run -d --name $selenoid_container_name \
     -p 4444:4444 \
-    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v //var/run/docker.sock:/var/run/docker.sock \
     -v /$teamcity_tests_directory/$workdir/$selenoid_workdir/config:/etc/selenoid:ro \
     aerokube/selenoid:latest-release
 
