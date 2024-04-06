@@ -13,7 +13,7 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
       - name: Setup maven wrapper
-        run: chmode +x mvnw
+        run: chmod +x mvnw
 
       # По умолчанию в ubuntu отсутствует команда ifconfig
       - name: Install ifconfig
