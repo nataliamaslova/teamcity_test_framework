@@ -64,8 +64,14 @@ jobs:
             -p 8111:8111 \
             jetbrains/teamcity-server:2023.11.1
 
-      - name: Set up TeamCity server
+      - name: Set up browsers farm settings in config property
+        run: echo "remote=http://$HOST:4444/wd/hub" >> src/main/resources/config.properties
+      - name: Define browser in config property
+        run: echo "browser=firefox" >> src/main/resources/config.properties
+      - name: Verify config.properties
+        run: cat src/main/resources/config.properties
 
+      - name: Set up TeamCity server
         # Настройка сервера при первом запуске (принятие лицензии, выбор базы данных и т.д.), реализованная в виде теста
         run: ./mvnw clean test -Dtest=SetupFirstStartTest#setupTeamCityServerTest
 
@@ -74,13 +80,7 @@ jobs:
         run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
       - name: Set up superUserToken config property
         run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
-      - name: Set up browsers farm settings in config property
-        run: echo "remote=http://$HOST:4444/wd/hub" >> src/main/resources/config.properties
-      - name: Set up browsers farm settings in config property
-        run: echo "browser=firefox" >> src/main/resources/config.properties
-      - name: Verify config.properties
-        run: cat src/main/resources/config.properties
-
+      
       - name: Run TeamCity agent
         run: |
           docker run -e SERVER_URL=http://$HOST:8111 -u 0 -d --name teamcity-agent \
