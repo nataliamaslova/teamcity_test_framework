@@ -28,7 +28,8 @@ jobs:
         run: echo "host=$HOST:8111" >> src/main/resources/config.properties
 
       - name: Pull Selenoid Chrome/Firefox/..
-        run: docker pull selenoid/vnc_chrome:119.0
+#        run: docker pull selenoid/vnc_chrome:119.0
+        run: docker pull selenoid/vnc:firefox_89.0
 
       - name: Run Selenoid
         # Флаг -d запускает контейнер в фоновом режиме (например, контейнер с сервером
