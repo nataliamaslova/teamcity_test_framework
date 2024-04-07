@@ -32,7 +32,7 @@ jobs:
         run: docker pull selenoid/vnc:firefox_89.0
 
       - name: View browsers.json
-        run: cat selenoid/browsers.json
+        run: cat selenoid/config/browsers.json
 
       - name: Run Selenoid
         # Флаг -d запускает контейнер в фоновом режиме (например, контейнер с сервером
@@ -41,7 +41,7 @@ jobs:
         run: |
           docker run -d --name selenoid \
           -v /var/run/docker.sock:/var/run/docker.sock \
-          -v selenoid/config/:/etc/selenoid/:ro \
+          -v /${GITHUB_WORKSPACE}/selenoid/config/:/etc/selenoid/:ro \
           -p 4444:4444 \
           aerokube/selenoid
 
