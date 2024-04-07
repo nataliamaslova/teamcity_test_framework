@@ -31,9 +31,6 @@ jobs:
 #        run: docker pull selenoid/vnc_chrome:119.0
         run: docker pull selenoid/vnc:firefox_89.0
 
-      - name: View browsers.json
-        run: cat selenoid/config/browsers.json
-
       - name: Run Selenoid
         # Флаг -d запускает контейнер в фоновом режиме (например, контейнер с сервером
         # не имеет окончания, он просто всегда включен,

@@ -168,9 +168,15 @@ Accept: application/json
 X-TC-CSRF-Token: 48b791b0-71c4-44fb-8b31-2e5b4d685d5b
 
 ### 12. Put agent
-PUT http://192.168.0.165:8111/app/rest/agents/ip_172.17.0.1-2/authorized
+PUT http://192.168.0.165:8111/app/rest/agents/ip_172.17.0.1/authorized
 Content-Type: text/plain
 Accept: text/plain
 X-TC-CSRF-Token: 2307798a-4faa-4fef-a3dc-2162b37d5d13
 
 true
+
+### 13. Get agents /app/rest/agents
+GET http://%3A8414958463998389165@192.168.0.165:8111/app/rest/agents
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 8414958463998389165
