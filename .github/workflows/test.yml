@@ -31,17 +31,17 @@ jobs:
 #        run: docker pull selenoid/vnc_chrome:119.0
         run: docker pull selenoid/vnc:firefox_89.0
 
-      - name: View pwd
-        run: cat $pwd/selenoid/browsers.json
+      - name: View browsers.json
+        run: cat selenoid/browsers.json
 
       - name: Run Selenoid
         # Флаг -d запускает контейнер в фоновом режиме (например, контейнер с сервером
         # не имеет окончания, он просто всегда включен,
         # и если мы без этого флага в него перейдем, то никогда не сможем перешагнуть к следующему степу
         run: |
-          docker run --name selenoid \
+          docker run -d --name selenoid \
           -v /var/run/docker.sock:/var/run/docker.sock \
-          -v $(pwd)/selenoid/config/:/etc/selenoid/:ro \
+          -v selenoid/config/:/etc/selenoid/:ro \
           -p 4444:4444 \
           aerokube/selenoid
 
