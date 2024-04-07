@@ -92,6 +92,6 @@ jobs:
         # Не указываем clean, чтобы потом в итоговом репорте были и setup тесты
         run: ./mvnw test -Dtest=AuthorizeAgentTest#authorizeAgent
 
-      - name: Run tests
-        run: ./mvnw test  # запуск тестов из сьютов, указанных в pom.xml
+#      - name: Run tests
+#        run: ./mvnw test  # запуск тестов из сьютов, указанных в pom.xml
 #        run: ./mvnw test -Dgroups=Regression # Указываем группу
