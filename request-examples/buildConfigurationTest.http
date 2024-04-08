@@ -176,7 +176,6 @@ X-TC-CSRF-Token: 2307798a-4faa-4fef-a3dc-2162b37d5d13
 true
 
 ### 13. Get agents /app/rest/agents
-GET http://%3A8414958463998389165@192.168.0.165:8111/app/rest/agents
+GET http://%3A1630286690547818307@192.168.0.165:8111/app/rest/agents
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 8414958463998389165
