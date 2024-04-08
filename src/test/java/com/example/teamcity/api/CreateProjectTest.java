@@ -24,7 +24,6 @@ public class CreateProjectTest extends BaseApiTest {
 
         softy.assertThat(project.getId()).isEqualTo(testData.getProject().getId());
     }
-
     @Test
     public void projectIsNotCreatedForUnauthorizedUserTest() {
         var testData = testDataStorage.addTestData();
@@ -165,5 +164,4 @@ public class CreateProjectTest extends BaseApiTest {
 
         softy.assertThat(project.getName()).isEqualTo(expectedProjectName);
     }
-
 }
