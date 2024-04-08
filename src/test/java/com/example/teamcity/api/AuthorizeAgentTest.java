@@ -9,24 +9,13 @@ import org.testng.annotations.Test;
 public class AuthorizeAgentTest extends BaseApiTest {
     @Test
     public void authorizeAgent() {
-        String agentName = RestAssured
-                .given()
-                .spec(Specifications.getSpec().superUserSpec())
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .get("/app/rest/agents")
-                .then().assertThat().statusCode(HttpStatus.SC_OK)
-                .extract().jsonPath().getString("agent.name");
-
-        agentName = (agentName.substring(1, agentName.length() - 1));
-
         RestAssured
                 .given()
                 .spec(Specifications.getSpec().superUserSpec())
                 .contentType(ContentType.TEXT)
                 .accept(ContentType.TEXT)
                 .body("true")
-                .put("/app/rest/agents/" + agentName + "/authorized") //  ip_172.17.0.1
+                .put("/app/rest/agents/ip_172.17.0.1/authorized")
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
     }
 }
