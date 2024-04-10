@@ -77,9 +77,9 @@ cd .. && cd $selenoid_workdir
 mkdir config
 cp $teamcity_tests_directory/infra/browsers.json config/
 
+#    if local browser used - apply only one in docker line / -v /var/run/docker.sock:/var/run/docker.sock \
 docker run -d --name $selenoid_container_name \
     -p 4444:4444 \
-#    if local browser used - apply only one / e.g. -v /var/run/docker.sock:/var/run/docker.sock \
     -v //var/run/docker.sock:/var/run/docker.sock \
     -v /$teamcity_tests_directory/$workdir/$selenoid_workdir/config:/etc/selenoid:ro \
     aerokube/selenoid:latest-release
