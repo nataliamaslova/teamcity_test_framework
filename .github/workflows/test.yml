@@ -96,6 +96,7 @@ jobs:
         run: ./mvnw test  # запуск тестов из сьютов, указанных в pom.xml
 #        run: ./mvnw test -Dgroups=Regression # Указываем группу
 
+# Allure reports
       - name: Load test report history
         uses: actions/checkout@v4
         if: always()
