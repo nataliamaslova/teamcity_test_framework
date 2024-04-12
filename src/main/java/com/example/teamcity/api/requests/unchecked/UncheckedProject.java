@@ -2,6 +2,7 @@ package com.example.teamcity.api.requests.unchecked;
 
 import com.example.teamcity.api.requests.CrudInterface;
 import com.example.teamcity.api.requests.Request;
+import com.github.viclovsky.swagger.coverage.SwaggerCoverageRestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -17,6 +18,7 @@ public class UncheckedProject extends Request implements CrudInterface {
     @Override
     public Response create(Object obj) {
         return given()
+                .filter(new SwaggerCoverageRestAssured())
                 .spec(spec)
                 .body(obj)
                 .post(PROJECT_ENDPOINT);
@@ -25,6 +27,7 @@ public class UncheckedProject extends Request implements CrudInterface {
     @Override
     public Response get(String id) {
         return given()
+                .filter(new SwaggerCoverageRestAssured())
                 .spec(spec)
                 .get(PROJECT_ENDPOINT + "/id:" + id);
     }
@@ -37,6 +40,7 @@ public class UncheckedProject extends Request implements CrudInterface {
     @Override
     public Response delete(String id) {
         return given()
+                .filter(new SwaggerCoverageRestAssured())
                 .spec(spec)
                 .delete(PROJECT_ENDPOINT + "/id:" + id);
     }
