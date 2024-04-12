@@ -16,9 +16,6 @@ jobs:
       - name: Setup maven wrapper
         run: chmod +x mvnw
 
-      - name: Setup swagger coverage
-        run: chmod +x swagger-coverage-commandline/bin/swagger-coverage-commandline
-
       # По умолчанию в ubuntu отсутствует команда ifconfig
       - name: Install ifconfig
         run: sudo apt-get update && sudo apt-get install -y net-tools
@@ -127,9 +124,15 @@ jobs:
 
 # Создание Swagger-репорта с покрытием API тестов
 # Документация: https://github.com/viclovsky/swagger-coverage
+      - name: Install Swagger coverage
+        run: |
+         wget https://github.com/viclovsky/swagger-coverage/releases/download/1.5.0/swagger-coverage-1.5.0.zip
+         unzip -d swagger-coverage-commandline -j swagger-coverage-commandline-1.5.0.zip
+         chmod +x swagger-coverage-commandline/bin/swagger-coverage-commandline
+
       - name: Run Swagger coverage
         if: always()
-        run: ./swagger-coverage-commandline/bin/swagger-coverage-commandline -s http://$HOST:8111/app/rest/swagger.json -i target/swagger-coverage-output
+        run: swagger-coverage-commandline/bin/swagger-coverage-commandline -s http://$HOST:8111/app/rest/swagger.json -i target/swagger-coverage-output
 
       # Swagger coverage репорт сохраняется в артефакты GitHub Actions прогона
       - name: Save Swagger coverage
