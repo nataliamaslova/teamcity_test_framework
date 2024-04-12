@@ -123,13 +123,6 @@ jobs:
 
 # Создание Swagger-репорта с покрытием API тестов
 # Документация: https://github.com/viclovsky/swagger-coverage
-
-# Install swagger-coverage
-      - name: Install swagger-coverage
-        run: |
-            wget https://github.com/viclovsky/swagger-coverage/releases/download/1.5.0/swagger-coverage-1.5.0.zip
-            unzip swagger-coverage-commandline-1.5.0.zip
-
       - name: Run Swagger coverage
         if: always()
         run: .swagger-coverage-commandline/bin/swagger-coverage-commandline -s http://$HOST:8111/app/rest/swagger.json -i target/swagger-coverage-output
