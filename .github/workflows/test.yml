@@ -12,8 +12,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
+
       - name: Setup maven wrapper
         run: chmod +x mvnw
+
+      - name: Setup swagger coverage
+        run: chmod +x swagger-coverage-commandline/bin/swagger-coverage-commandline
 
       # По умолчанию в ubuntu отсутствует команда ifconfig
       - name: Install ifconfig
