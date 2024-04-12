@@ -16,20 +16,20 @@ jobs:
       - name: Setup maven wrapper
         run: chmod +x mvnw
 
-      # По умолчанию в ubuntu отсутствует команда ifconfig
+        # По умолчанию в ubuntu отсутствует команда ifconfig
       - name: Install ifconfig
         run: sudo apt-get update && sudo apt-get install -y net-tools
 
       - name: Set up host environment variable
-      # Команда для определения ip адреса для обращения из другого контейнера, рекомендуется в документации Selenoid UI: https://aerokube.com/selenoid-ui/latest/
+        # Команда для определения ip адреса для обращения из другого контейнера, рекомендуется в документации Selenoid UI: https://aerokube.com/selenoid-ui/latest/
         run: |
           echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
-      # Храним переменные как в переменных среды ($GITHUB_ENV), для использования внутри этого yml файла, так и в config.properties, для использования в тестах
+        # Храним переменные как в переменных среды ($GITHUB_ENV), для использования внутри этого yml файла, так и в config.properties, для использования в тестах
       - name: Set up host config property
         run: echo "host=$HOST:8111" > src/main/resources/config.properties
 
       - name: Pull Selenoid Chrome/Firefox/..
-#        run: docker pull selenoid/vnc_chrome:119.0
+        #run: docker pull selenoid/vnc_chrome:119.0
         run: docker pull selenoid/vnc:firefox_89.0
 
       - name: Run Selenoid
@@ -88,16 +88,16 @@ jobs:
           -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
           jetbrains/teamcity-agent:2023.11.1
 
+        # Авторизация агента при первом запуске, реализованная в виде теста
+        # Не указываем clean, чтобы потом в итоговом репорте были и setup тесты
+      - name: Set up TeamCity agent
+        run: ./mvnw test -Dtest=AuthorizeAgentTest#authorizeAgent
+        # run: ./mvnw test -Dgroups=Regression # Указываем группу
+
       - name: Run tests
         run: ./mvnw test  # запуск тестов из сьютов, указанных в pom.xml
 
-      # Авторизация агента при первом запуске, реализованная в виде теста
-      # Не указываем clean, чтобы потом в итоговом репорте были и setup тесты
-      - name: Set up TeamCity agent
-        run: ./mvnw test -Dtest=AuthorizeAgentTest#authorizeAgent
-#        run: ./mvnw test -Dgroups=Regression # Указываем группу
-
-# Allure reports
+        # Allure reports
       - name: Load test report history
         uses: actions/checkout@v4
         if: always()
@@ -122,8 +122,8 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
 
-# Создание Swagger-репорта с покрытием API тестов
-# Документация: https://github.com/viclovsky/swagger-coverage
+        # Создание Swagger-репорта с покрытием API тестов
+        # Документация: https://github.com/viclovsky/swagger-coverage
       - name: Install Swagger coverage
         run: |
          wget https://github.com/viclovsky/swagger-coverage/releases/download/1.5.0/swagger-coverage-1.5.0.zip
@@ -134,7 +134,7 @@ jobs:
         if: always()
         run: swagger-coverage-commandline-1.5.0/bin/swagger-coverage-commandline -s http://$HOST:8111/app/rest/swagger.json -i swagger-coverage-output
 
-      # Swagger coverage репорт сохраняется в артефакты GitHub Actions прогона
+        # Swagger coverage репорт сохраняется в артефакты GitHub Actions прогона
       - name: Save Swagger coverage
         uses: actions/upload-artifact@v4
         if: always()
