@@ -127,8 +127,8 @@ mvn test -Dtest=AuthorizeAgentTest#authorizeAgent
 echo "Run API/UI tests"
 mvn test
 
-################################
-echo "Create Swagger report for API tests coverage"
-# Doc: https://github.com/viclovsky/swagger-coverage
-
-swagger-coverage-commandline -s http://$ip:8111/app/rest/swagger.json -i swagger-coverage-output
+#################################
+#echo "Create Swagger report for API tests coverage"
+## Doc: https://github.com/viclovsky/swagger-coverage
+#
+#swagger-coverage-commandline -s http://$ip:8111/app/rest/swagger.json -i swagger-coverage-output
