@@ -19,6 +19,9 @@ public class NewProjectDescription {
 
     // Teamcity builds project id on the base of project name: test_qIRqFnQwqc -> TestQIRqFnQwqc
     public String getTeamCityProjectId() {
+        if (name.isEmpty()) {
+            return name;
+        }
         String id = name.replace("_", "");
         id = Character.toUpperCase(id.charAt(0)) + id.substring(1,4) + Character.toUpperCase(id.charAt(4)) + id.substring(5);
         return id;
