@@ -135,7 +135,8 @@ X-TC-CSRF-Token: dc786017-3952-4ac1-8942-c31e4c6e66f5
 #X-TC-CSRF-Token: 74a7cb06-c2b1-4bab-8582-34a95dd52ab0
 GET http://192.168.0.165:8111/app/rest/server/authSettings
 Content-Type: application/json
-Accept: application/js
+Accept: application/json
+X-TC-CSRF-Token: d3a78039-4610-4e85-9484-38f0f06c6c42
 
 ### 7. Find projects
 GET http://192.168.0.165:8111/app/rest/projects

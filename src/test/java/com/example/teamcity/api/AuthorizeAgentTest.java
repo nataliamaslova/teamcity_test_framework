@@ -3,15 +3,16 @@ package com.example.teamcity.api;
 import com.example.teamcity.api.spec.Specifications;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import lombok.SneakyThrows;
 import org.apache.http.HttpStatus;
+import org.awaitility.Awaitility;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class AuthorizeAgentTest extends BaseApiTest {
-    @SneakyThrows
     @Test
     public void authorizeAgent() {
-        Thread.sleep(1000 * 20);
+        Awaitility.await().atMost(20, TimeUnit.SECONDS).until(() -> this.getStatusCode() == 200);
 
         String agentName = RestAssured
                 .given()
@@ -33,4 +34,14 @@ public class AuthorizeAgentTest extends BaseApiTest {
                 .put("/app/rest/agents/" + agentName + "/authorized")
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
     }
+
+    private int getStatusCode() {
+        return RestAssured.given()
+                .spec(Specifications.getSpec().superUserSpec())
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .get("/app/rest/agents?locator=authorized:false")
+                .then().extract().statusCode();
+    }
+
 }
