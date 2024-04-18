@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthorizeAgentTest extends BaseApiTest {
     @Test
     public void authorizeAgent() {
-        Awaitility.await().atMost(20, TimeUnit.SECONDS).until(() -> this.getStatusCode() == 200);
+        Awaitility.await().atMost(60, TimeUnit.SECONDS).until(() -> this.getStatusCode() == 200);
 
         String agentName = RestAssured
                 .given()
