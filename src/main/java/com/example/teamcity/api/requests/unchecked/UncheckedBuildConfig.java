@@ -2,6 +2,7 @@ package com.example.teamcity.api.requests.unchecked;
 
 import com.example.teamcity.api.requests.CrudInterface;
 import com.example.teamcity.api.requests.Request;
+import com.github.viclovsky.swagger.coverage.SwaggerCoverageRestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -16,13 +17,16 @@ public class UncheckedBuildConfig extends Request implements CrudInterface {
 
     @Override
     public Response create(Object obj) {
-        return given().spec(spec).body(obj)
+        return given()
+                .filter(new SwaggerCoverageRestAssured())
+                .spec(spec).body(obj)
                 .post(BUILD_CONFIG_ENDPOINT);
     }
 
     @Override
     public Response get(String id) {
         return given()
+                .filter(new SwaggerCoverageRestAssured())
                 .spec(spec)
                 .get(BUILD_CONFIG_ENDPOINT + "/id:" + id);
     }
@@ -30,6 +34,7 @@ public class UncheckedBuildConfig extends Request implements CrudInterface {
     @Override
     public Response update(String id, Object obj) {
         return given()
+                .filter(new SwaggerCoverageRestAssured())
                 .spec(spec)
                 .body(obj)
                 .get(BUILD_CONFIG_ENDPOINT + "/id:" + id);
@@ -37,7 +42,9 @@ public class UncheckedBuildConfig extends Request implements CrudInterface {
 
     @Override
     public Response delete(String id) {
-        return given().spec(spec)
+        return given()
+                .filter(new SwaggerCoverageRestAssured())
+                .spec(spec)
                 .delete(BUILD_CONFIG_ENDPOINT + "/id:" + id);
     }
 }
